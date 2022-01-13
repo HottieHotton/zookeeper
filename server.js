@@ -3,6 +3,7 @@ const path = require('path');
 const express = require('express');
 const PORT = process.env.PORT || 3001;
 const app = express();
+app.use(express.static('zookeepr-public'));
 // parse incoming string or array data
 app.use(express.urlencoded({ extended: true }));
 // parse incoming JSON data
@@ -108,6 +109,22 @@ app.get('/api/animals', (req, res) => {
     }
     return true;
   }
+
+  app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, './zookeepr-public/index.html'));
+  });
+
+  app.get('/animals', (req, res) => {
+    res.sendFile(path.join(__dirname, './zookeepr-public/animals.html'));
+  });
+
+  app.get('/zookeepers', (req, res) => {
+    res.sendFile(path.join(__dirname, './zookeepr-public/zookeepers.html'));
+  });
+
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, './zookeepr-public/index.html'));
+  });
 
   app.listen(PORT, () => {
     console.log(`API server now on port ${PORT}!`);
